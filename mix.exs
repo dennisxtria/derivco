@@ -9,7 +9,6 @@ defmodule Derivco.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
-      aliases: aliases(),
       deps: deps()
     ]
   end
@@ -17,7 +16,7 @@ defmodule Derivco.MixProject do
   def application do
     [
       mod: {Derivco.Application, []},
-      extra_applications: [:logger, :runtime_tools, :prometheus_ecto, :prometheus_ex]
+      extra_applications: [:logger, :runtime_tools, :exprotobuf, :prometheus_ex]
     ]
   end
 
@@ -26,36 +25,26 @@ defmodule Derivco.MixProject do
 
   defp deps do
     [
+      {:credo, "~> 1.1", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.0.0-rc.6", only: :dev, runtime: false},
       {:ecto_sql, "~> 3.1"},
-      {:ex_doc, "~> 0.20.2", only: :dev, runtime: false},
+      {:ex_doc, "~> 0.21.1", only: :dev, runtime: false},
+      {:exprotobuf, "~> 1.2"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:nimble_csv, "~> 0.6.0"},
-      {:phoenix, "~> 1.4.9"},
+      {:open_api_spex, "~> 3.4"},
       {:phoenix_ecto, "~> 4.0"},
       {:phoenix_html, "~> 2.11"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_pubsub, "~> 1.1"},
-      {:postgrex, ">= 0.0.0"},
-
-      # analysis
-      {:credo, "~> 1.1", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.0.0-rc.6", only: :dev, runtime: false},
-
-      # metrics
+      {:phoenix, "~> 1.4.9"},
       {:plug_cowboy, "~> 2.0"},
+      {:postgrex, ">= 0.0.0"},
       {:prometheus_decorator, github: "dennisxtria/prometheus_decorator"},
       {:prometheus_ecto, "~> 1.4"},
       {:prometheus_ex, "~> 3.0"},
       {:prometheus_plugs, "~> 1.1"}
-    ]
-  end
-
-  defp aliases do
-    [
-      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
-      "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate", "test"]
     ]
   end
 end

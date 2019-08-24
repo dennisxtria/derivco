@@ -1,14 +1,8 @@
 use Mix.Config
 
-config :derivco, Derivco.Repo,
-  username: "postgres",
-  password: "postgres",
-  database: "derivco_dev",
-  hostname: "localhost",
-  show_sensitive_data_on_connection_error: true,
-  pool_size: 10
+app = Mix.Project.config()[:app]
 
-config :derivco, DerivcoWeb.Endpoint,
+config app, DerivcoWeb.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,
@@ -23,7 +17,7 @@ config :derivco, DerivcoWeb.Endpoint,
     ]
   ]
 
-config :derivco, DerivcoWeb.Endpoint,
+config app, DerivcoWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",

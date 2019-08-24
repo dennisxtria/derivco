@@ -3,19 +3,19 @@ defmodule Derivco.Application do
 
   use Application
 
-  import Derivco.Metrics.Config, only: [port: 0]
-
   alias Derivco.{Metrics, Metrics.PrometheusExporter}
 
+  @name __MODULE__
+
+  @doc false
   def start(_type, _args) do
     Metrics.setup()
 
     [
-      {Plug.Cowboy, scheme: :http, plug: PrometheusExporter, options: [port: port()]},
-      Derivco.Repo,
+      {Plug.Cowboy, scheme: :http, plug: PrometheusExporter, options: [port: 8081]},
       DerivcoWeb.Endpoint
     ]
-    |> Supervisor.start_link(strategy: :one_for_one, name: Derivco.Supervisor)
+    |> Supervisor.start_link(strategy: :one_for_one, name: @name)
   end
 
   def config_change(changed, _new, removed) do

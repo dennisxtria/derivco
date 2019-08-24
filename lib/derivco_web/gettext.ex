@@ -20,5 +20,7 @@ defmodule DerivcoWeb.Gettext do
 
   See the [Gettext Docs](https://hexdocs.pm/gettext) for detailed usage.
   """
-  use Gettext, otp_app: :derivco
+  @app Mix.Project.config()[:app]
+
+  use Gettext, otp_app: @app
 end

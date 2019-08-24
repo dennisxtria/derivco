@@ -1,4 +1,6 @@
 defmodule DerivcoWeb.Router do
+  @moduledoc false
+
   use DerivcoWeb, :router
 
   pipeline :browser do
@@ -11,19 +13,30 @@ defmodule DerivcoWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug OpenApiSpex.Plug.PutApiSpec, module: DerivcoWeb.APISpec
   end
 
-  scope "/", DerivcoWeb do
+  pipeline :protocol_buffer_api do
+    plug :accepts, ["json"]
+  end
+
+  scope "/" do
     pipe_through :browser
-
-    get "/", PageController, :index
+    get "/swaggerui", OpenApiSpex.Plug.SwaggerUI, path: "/api/openapi"
   end
 
-  scope "/api", DerivcoWeb, as: :api do
+  scope "/api" do
     pipe_through :api
+    resources "/div-season-pairs", DerivcoWeb.OpenAPIController, only: [:index]
+    get "/openapi", OpenApiSpex.Plug.RenderSpec, :show
+    get "/div-season-pairs/:div/:season/fixtures", DerivcoWeb.OpenAPIController, :show
+  end
 
-    get "/leagues", LeaguesController, :show_leagues
+  scope "/api", DerivcoWeb, as: :protocol_buffer_api do
+    pipe_through :protocol_buffer_api
 
-    get "/leagues/:div/:season", LeaguesController, :show_leagues_by_div_season
+    get "/protocol-buffer/div-season-pairs/:div/:season/fixtures",
+        ProtocolBuffer.FixturesController,
+        :show_fixtures_by_div_season
   end
 end

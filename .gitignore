@@ -25,6 +25,10 @@ derivco-*.tar
 # Ignore ElixirLS artifacts
 .elixir_ls
 
+# Ignore secret configurations expect the template.
+/config/*.secrets.exs
+!/config/.secrets.exs
+
 # If NPM crashes, it generates a log, let's ignore it too.
 npm-debug.log
 

@@ -3,10 +3,10 @@ defmodule Derivco.Metrics do
   Common area to set up metrics.
   """
 
-  alias Derivco.Metrics.{LeaguesInstrumenter, PrometheusExporter}
+  alias Derivco.Metrics.{FixturesInstrumenter, PrometheusExporter}
 
   def setup do
-    LeaguesInstrumenter.setup()
+    FixturesInstrumenter.setup()
     PrometheusExporter.setup()
   end
 end
